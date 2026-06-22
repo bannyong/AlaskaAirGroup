@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AAG Data Foundation Workshop — Internal Meeting Prep</title>
+  <style>
+    :root { color-scheme: light; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #f5f6f8;
+      color: #1a1a2e;
+      line-height: 1.7;
+      padding: 40px 20px 80px;
+    }
+
+    .page { max-width: 880px; margin: 0 auto; }
+
+    /* ── Doc Header ── */
+    .doc-header {
+      background: linear-gradient(135deg, #0b3d91 0%, #1565c0 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 36px 40px 32px;
+      margin-bottom: 12px;
+    }
+    .doc-header h1 { font-size: 1.65rem; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 8px; }
+    .doc-header .meta { font-size: 0.88rem; opacity: 0.8; font-style: italic; }
+
+    /* ── TOC ── */
+    .toc {
+      background: #fff;
+      border: 1px solid #e0e5f0;
+      border-radius: 10px;
+      padding: 18px 24px;
+      margin-bottom: 36px;
+      font-size: 0.88rem;
+    }
+    .toc strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 10px; }
+    .toc ol { padding-left: 18px; }
+    .toc li { margin-bottom: 4px; }
+    .toc a { color: #0b3d91; text-decoration: none; }
+    .toc a:hover { text-decoration: underline; }
+
+    /* ── Part label / title ── */
+    .part-label {
+      display: inline-block;
+      background: #0b3d91;
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+    .part-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #0b3d91;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #dce3f0;
+    }
+    .part-divider { border: none; border-top: 2px solid #dce3f0; margin: 44px 0 36px; }
+
+    /* ── Cards ── */
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      border: 1px solid #e0e5f0;
+      padding: 26px 30px;
+      margin-bottom: 18px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #0b3d91;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .card h3 .tag {
+      background: #e8eef9;
+      color: #0b3d91;
+      font-size: 0.73rem;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 20px;
+      white-space: nowrap;
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+    .card h4 { font-size: 0.93rem; font-weight: 700; color: #333; margin: 18px 0 7px; }
+    .card p  { font-size: 0.92rem; color: #374151; margin-bottom: 11px; }
+    .card ul { list-style: none; padding: 0; margin-bottom: 11px; }
+    .card ul li { font-size: 0.92rem; color: #374151; padding: 4px 0 4px 20px; position: relative; }
+    .card ul li::before { content: "→"; position: absolute; left: 0; color: #6b8ed6; font-size: 0.85rem; }
+
+    /* ── Attendee two-col ── */
+    .attendees-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 4px;
+    }
+    @media (max-width: 600px) { .attendees-grid { grid-template-columns: 1fr; } }
+    .att-group h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+      margin-bottom: 10px;
+    }
+    .att-person { margin-bottom: 10px; }
+    .att-person .name { font-size: 0.9rem; font-weight: 700; color: #1a1a2e; }
+    .att-person .title { font-size: 0.83rem; color: #6b7280; }
+
+    /* ── Quotes ── */
+    blockquote {
+      border-left: 3px solid #6b8ed6;
+      background: #f0f4fb;
+      border-radius: 0 6px 6px 0;
+      padding: 10px 16px;
+      margin: 12px 0;
+      font-size: 0.9rem;
+      color: #2d3a52;
+      font-style: italic;
+    }
+
+    /* ── Callout box ── */
+    .callout {
+      background: #e8f0fe;
+      border: 1px solid #c2d3f8;
+      border-radius: 8px;
+      padding: 13px 18px;
+      margin: 14px 0;
+    }
+    .callout strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.8px; color: #0b3d91; margin-bottom: 6px; }
+    .callout ul { margin: 0; }
+
+    /* ── Informatica capability pills ── */
+    .info-pill {
+      display: inline-block;
+      background: #fff3e0;
+      border: 1px solid #f59e0b;
+      color: #92400e;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      margin-right: 6px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+    }
+
+    /* ── Arch table ── */
+    .arch-table-wrap { overflow-x: auto; margin: 14px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.87rem; }
+    thead tr { background: #0b3d91; color: #fff; }
+    thead th { padding: 10px 14px; text-align: left; font-weight: 600; }
+    tbody tr:nth-child(even) { background: #f4f7fd; }
+    tbody tr:nth-child(odd)  { background: #fff; }
+    tbody td { padding: 9px 14px; border-bottom: 1px solid #e5eaf4; color: #374151; }
+    tbody td:first-child { font-weight: 600; color: #0b3d91; }
+    tr.highlight-row td { background: #fef9e7 !important; font-weight: 600; }
+    tr.highlight-row td:first-child { color: #b45309; }
+
+    /* ── Challenge badge ── */
+    .challenge-num {
+      display: inline-block;
+      background: #fde8e8;
+      color: #9b1c1c;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-right: 6px;
+    }
+
+    .footer-note { text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 44px; font-style: italic; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="doc-header">
+    <h1>AAG Data Foundation Workshop — Internal Meeting Prep</h1>
+    <p class="meta">Based on pre-call with AAG Enterprise Architecture team &nbsp;·&nbsp; June 17, 2026</p>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <strong>Contents</strong>
+    <ol>
+      <li><a href="#s1">Call Summary — Attendees</a></li>
+      <li><a href="#s2">Key Challenges &amp; Aspirations</a></li>
+      <li><a href="#s3">Internal Meeting Talking Points</a></li>
+      <li><a href="#s4">How Informatica Can Help (MDM &amp; Data Integration)</a></li>
+      <li><a href="#s5">Draft Workshop POV Narrative</a></li>
+    </ol>
+  </div>
+
+  <!-- ═══ PART 1: CALL SUMMARY ═══ -->
+  <div id="s1">
+    <div class="part-label">Part 1</div>
+    <div class="part-title">Call Summary — Attendees</div>
+  </div>
+
+  <div class="card">
+    <div class="attendees-grid">
+      <div class="att-group">
+        <h4>Salesforce Side</h4>
+        <div class="att-person"><div class="name">Jeff Gundlach</div><div class="title">Account Executive (implied); organized the pre-call and led agenda-setting</div></div>
+        <div class="att-person"><div class="name">Kiran Basu</div><div class="title">Enterprise Architect, Travel &amp; Hospitality; new to the AAG account</div></div>
+        <div class="att-person"><div class="name">Michael Norton</div><div class="title">Technical Architect, 8 years at Salesforce</div></div>
+        <div class="att-person"><div class="name">Shoib Ali</div><div class="title">Leads Solutions team for MuleSoft Data Foundation</div></div>
+        <div class="att-person"><div class="name">Dan Savoie</div><div class="title">MuleSoft Solution Engineer, ~3 years; background in integration</div></div>
+        <div class="att-person"><div class="name">Dan Allen</div><div class="title">Solution Engineer, Dallas; focused on business value translation</div></div>
+      </div>
+      <div class="att-group">
+        <h4>Alaska Airlines Group (AAG) Side</h4>
+        <div class="att-person"><div class="name">Robin Bater</div><div class="title">Director of Enterprise Architecture; primary AAG voice on the call</div></div>
+        <div class="att-person"><div class="name">Sandeep Gopinathan</div><div class="title">Senior Solutions Architect, Middleware team (reports to Aaron)</div></div>
+        <div class="att-person"><div class="name">Srikanth Vedanabhatla</div><div class="title">Enterprise Architect, 12 years at Alaska; supports flight ops &amp; middleware</div></div>
+        <div class="att-person"><div class="name">Scott Zeitner</div><div class="title">Enterprise Architect; Databricks, analytics, and AI/agentic strategy</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PART 2: CHALLENGES ═══ -->
+  <hr class="part-divider" />
+  <div id="s2">
+    <div class="part-label">Part 2</div>
+    <div class="part-title">Key Challenges &amp; Aspirations</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="challenge-num">1</span> Incomplete Unified Traveler Profile</h3>
+    <p>AAG has started building a Customer Master inside DAP but it isn't complete across all systems. Every downstream team — contact center, marketing, AI — is limited by this gap.</p>
+    <blockquote>"We have a customer master ID tagged to all the domains in the DAP, but it's not complete. What you're talking about is a complete correlation across all the different systems." — Srikanth</blockquote>
+  </div>
+
+  <div class="card">
+    <h3><span class="challenge-num">2</span> Fragmented, Complex Data Infrastructure</h3>
+    <p>Their estate spans MongoDB (DAP), Databricks (migrating from Snowflake), Informatica (replacing Oracle ODI), Sabre, MIDAS/Atmos, and Google Analytics — with no single enterprise architecture diagram.</p>
+    <blockquote>"We have a lot of initiatives whereby for the future, where data is important, and we have some legacy databases that we need to migrate from." — Robin</blockquote>
+  </div>
+
+  <div class="card">
+    <h3><span class="challenge-num">3</span> Bandwidth Constraints from the Hawaii Acquisition</h3>
+    <p>The Hawaiian Airlines integration has consumed significant capacity, delaying strategic data initiatives across the board.</p>
+    <blockquote>"Some of the delays as to why it hasn't happened is just purely time and other priorities... people are just so busy." — Robin</blockquote>
+  </div>
+
+  <div class="card">
+    <h3><span class="challenge-num">4</span> Dual-Brand Architecture Complexity</h3>
+    <p>AAG wants to consolidate onto Alaska systems while preserving a Hawaiian guest experience externally — a tension that affects every data and integration decision.</p>
+    <blockquote>"We want to sort of migrate to the Alaska system per se, but still externally to the guest, present a dual brand experience." — Robin</blockquote>
+  </div>
+
+  <div class="card">
+    <h3><span class="challenge-num">5</span> Middleware-to-Data Foundation Correlation Unclear</h3>
+    <p>The relationship between the MuleSoft migration and the broader data foundation strategy isn't yet defined. Both Sandeep and Srikanth flagged this as a priority question.</p>
+    <blockquote>"I'd like to know how these two meetings are — is one complementing the other, or how is the data going to feed to this data foundation?" — Sandeep</blockquote>
+  </div>
+
+  <div class="card">
+    <h3><span class="challenge-num">6</span> Agentic AI as a Forward Priority</h3>
+    <p>Scott is actively working on AI strategy and agentic workforce planning. The data foundation is the prerequisite for any agentic capability. Patrick O'Brien on AAG's AI team is already engaged with Salesforce.</p>
+    <blockquote>"A lot of your capabilities start to bleed into that space quite a bit." — Scott</blockquote>
+  </div>
+
+  <!-- ═══ PART 3: TALKING POINTS ═══ -->
+  <hr class="part-divider" />
+  <div id="s3">
+    <div class="part-label">Part 3</div>
+    <div class="part-title">Internal Meeting Talking Points</div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">Agenda Item 1</span> How MuleSoft + Tableau + Informatica + Data Cloud 360 Work Together</h3>
+
+    <h4>The Setup</h4>
+    <p>AAG owns three of four components: MuleSoft (replacing TIBCO), Informatica (replacing Oracle ODI), and Tableau. The missing piece is Data Cloud 360 — the connective tissue that makes the rest of the investment work together.</p>
+
+    <h4>The Gap: Where D360 Fits</h4>
+    <ul>
+      <li><strong>Identity resolution at scale</strong> — connecting Atmos loyalty IDs, PNR/booking history, contact center interactions, real-time IROPS data, and the DAP's Customer Master into one unified traveler profile.</li>
+      <li><strong>Zero-copy harmonization</strong> — references data where it lives rather than duplicating it. Critical for AAG's multi-system estate.</li>
+      <li><strong>Real-time + historical bridge</strong> — DAP/MongoDB "hot data" and Databricks "warm data" coexist and are both accessible to downstream consumers simultaneously.</li>
+    </ul>
+
+    <h4>The Architecture Story to Tell</h4>
+    <blockquote>DAP/MongoDB handles operational state → Informatica pipelines feed Databricks for history → D360 unifies identity across both layers → MuleSoft becomes the primary consumer of the unified profile, distributing it across systems → Tableau visualizes it for decision-makers.</blockquote>
+
+    <div class="callout">
+      <strong>Key Talking Points</strong>
+      <ul>
+        <li>D360 complements what they've built in DAP — not a rip-and-replace.</li>
+        <li>Zero-copy means we're not adding to their data duplication problem.</li>
+        <li>The dual-brand requirement is a D360 strength: identity resolution across brands without full consolidation.</li>
+        <li>The medallion architecture they're building in Databricks maps naturally to a D360 semantic layer.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">Agenda Item 2</span> Use Case Review — Where a Unified Traveler Profile Drives the Most Value</h3>
+
+    <h4>Contact Center — Agents with Full Travel Context</h4>
+    <p>The most explicitly named use case on the call. Agents currently toggle between systems for loyalty tier, bookings, PNR, and IROPS. With the unified profile:</p>
+    <ul>
+      <li>Single view of the guest's full journey at the moment of the call.</li>
+      <li>Agentic AI surfaces recommended resolutions (rebooking options, compensation thresholds) proactively.</li>
+      <li>Already in Salesforce CRM — augmentation, not a platform change.</li>
+    </ul>
+
+    <h4>Marketing — Personalization Beyond Atmos</h4>
+    <ul>
+      <li>All B2C emails already flow through Salesforce — infrastructure is in place.</li>
+      <li>Personalization moves from loyalty-tier-based to journey-based (full behavioral history).</li>
+      <li>Dual-brand cross-sell/upsell at the individual guest level without full systems consolidation.</li>
+    </ul>
+
+    <h4>Agentic AI — Scott's Domain</h4>
+    <ul>
+      <li>A unified traveler profile is the prerequisite for any meaningful agentic AI.</li>
+      <li>End-to-end disruption handling: identify affected guests → assess loyalty tier → determine offer → initiate outreach — no human handoffs.</li>
+      <li><strong>Ensure Scott is in the room for the workshop.</strong> This thread connects directly to the data foundation.</li>
+    </ul>
+
+    <h4>Cargo &amp; Corporate Sales</h4>
+    <ul>
+      <li><strong>Cargo:</strong> Flight ops data from DAP feeds directly into cargo sales workflows (capacity, flight status, route signals).</li>
+      <li><strong>Corporate Sales:</strong> Full account view of a corporate client's travel relationship — not just what's in CRM.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3><span class="tag">Agenda Item 3</span> What This Unlocks for Tableau</h3>
+
+    <h4>Current State Problem</h4>
+    <p>Analytics are fragmented by domain. Analysts navigate domain-specific sources rather than a unified layer — the same fragmentation that exists in their architecture diagrams.</p>
+
+    <h4>What the Foundation Unlocks</h4>
+    <ul>
+      <li><strong>Clean semantic layer:</strong> Tableau sits on top of the gold layer — pre-joined, business-ready data. No need to know where it lives.</li>
+      <li><strong>Cross-functional reporting:</strong> "Guest satisfaction with disruption handling" can pull loyalty (MIDAS), contact center (Salesforce), IROPS (DAP), and resolution (Sabre) from one place.</li>
+      <li><strong>Real-time + historical in one view:</strong> DAP handles operational state; Databricks handles history. D360 bridges them for simultaneous views in Tableau.</li>
+      <li><strong>Dual-brand executive analytics:</strong> How guests move between Alaska and Hawaiian — journey-level performance, not just separate brand P&Ls.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Key Talking Point</strong>
+      <ul>
+        <li>Every dollar invested in Tableau is currently limited by data fragmentation. The data foundation isn't a separate initiative — it's what makes Tableau's full promise redeemable.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ PART 4: INFORMATICA ═══ -->
+  <hr class="part-divider" />
+  <div id="s4">
+    <div class="part-label">Part 4</div>
+    <div class="part-title">How Informatica Can Help</div>
+  </div>
+
+  <div class="card">
+    <h3>Master Data Management</h3>
+    <span class="info-pill">MDM</span>
+    <span class="info-pill">Golden Record</span>
+    <span class="info-pill">Identity Resolution</span>
+
+    <h4>Golden Record Creation → The Unified Traveler Profile Gap</h4>
+    <p>AAG's incomplete Customer Master is precisely the MDM use case. Informatica MDM can consolidate guest identity across MIDAS/Atmos, Sabre PNR, DAP's MongoDB, contact center records, and Google Analytics into a single authoritative golden record.</p>
+
+    <h4>Survivorship &amp; Match/Merge → Dual-Brand Challenge</h4>
+    <p>With dual-brand complexity (Alaska + Hawaiian guest histories), Informatica's survivorship rules determine which attributes to retain from each brand's systems as AAG migrates — without requiring full systems consolidation first. Robin's challenge of presenting a unified guest while running separate underlying systems is an MDM-native problem.</p>
+
+    <h4>Hierarchy Management → Corporate Sales Use Case</h4>
+    <p>MDM can manage the relationship between individual travelers, corporate accounts, and loyalty tiers — giving the corporate sales team a true account hierarchy view directly within Salesforce CRM.</p>
+
+    <h4>Real-Time MDM Hub → MuleSoft Distribution Pattern</h4>
+    <p>Feeding the golden record back to MuleSoft as the distribution engine (which Kiran identified as the primary consumer) is a proven MDM + MuleSoft integration pattern. MDM maintains the authoritative profile; MuleSoft distributes it in real time to the contact center, marketing, and AI agents.</p>
+  </div>
+
+  <div class="card">
+    <h3>Data Integration</h3>
+    <span class="info-pill">Data Integration</span>
+    <span class="info-pill">IDMC</span>
+    <span class="info-pill">Pipeline Modernization</span>
+
+    <h4>Oracle ODI → Informatica IDMC Migration</h4>
+    <p>AAG is already on this path. The value to reinforce: Informatica IDMC isn't a like-for-like ODI replacement — it connects natively to Databricks, meaning pipelines built now serve both the medallion architecture and the MDM golden record simultaneously.</p>
+
+    <h4>Databricks Medallion Architecture Support</h4>
+    <p>Informatica can automate the bronze → silver → gold pipeline, applying data quality rules and MDM survivorship logic at the silver layer before data reaches the gold layer consumed by Tableau and D360. This is the architecture story that ties everything together for the workshop.</p>
+
+    <h4>DAP Event Integration → Real-Time Sync</h4>
+    <p>The DAP distributes operational events from source systems across the enterprise. Informatica's real-time integration capabilities can subscribe to those events and keep the MDM hub and Databricks analytical layer in sync — eliminating the "hot data vs. warm data" gap Kiran described on the call.</p>
+
+    <h4>Dual-Brand Data Consolidation → Incremental Migration</h4>
+    <p>As Hawaiian systems are gradually deprecated, Informatica pipelines can manage the data migration and consolidation incrementally — reducing risk during a period when Robin noted the team is already capacity-constrained from the Hawaii acquisition.</p>
+  </div>
+
+  <!-- ═══ PART 5: POV NARRATIVE ═══ -->
+  <hr class="part-divider" />
+  <div id="s5">
+    <div class="part-label">Part 5</div>
+    <div class="part-title">Draft Workshop POV Narrative &nbsp;<span style="font-size:0.85rem; font-weight:400; color:#6b7280;">For: AAG Data Foundation Workshop &nbsp;·&nbsp; Week of July 6, 2026</span></div>
+  </div>
+
+  <div class="card">
+    <h4>Where You Are Today</h4>
+    <p>Alaska Airlines Group has made significant investments in building a modern data infrastructure — and many of those investments are already paying off. The DAP and MongoDB operational data store give you real-time current state on every guest and every flight. Your Databricks migration is underway. Informatica is modernizing your data pipelines. MuleSoft is replacing aging integration infrastructure. Atmos Rewards is consolidated. The PSS migration is complete.</p>
+    <p>You've built more of the foundation than you may realize.</p>
+    <p>But there's a consistent tension that surfaces across every team using Salesforce today — in the contact center, in marketing, in cargo, in corporate sales. It sounds like this:</p>
+    <blockquote>"We have the system. We just don't have enough of the data."</blockquote>
+    <p>What your teams are describing is an identity problem. The Customer Master you've built inside DAP is a meaningful start — guest IDs correlated across loyalty, bookings, and contact history. But it's not complete. When a contact center agent answers a call, they can't see the guest's full journey in one place. When a marketing team launches a personalized campaign, they're working from a loyalty segment, not a true behavioral profile. When an AI agent is asked to handle a disruption, it can't act decisively because it can't see the whole picture.</p>
+    <p>The missing piece is a harmonization layer — something that resolves identity across DAP, Databricks, Sabre, and Atmos, and makes that unified profile available to every downstream system in real time.</p>
+  </div>
+
+  <div class="card">
+    <h4>What We're Proposing</h4>
+    <p>Data Cloud 360 is that layer. It's not a new database. It doesn't copy your data or ask you to move it. It references your existing systems — DAP's operational state, Databricks' historical depth, your Informatica pipelines — and resolves them into a single, continuously-updated traveler profile.</p>
+    <p>Here's how your stack comes together:</p>
+    <div class="arch-table-wrap">
+      <table>
+        <thead>
+          <tr><th>Layer</th><th>System</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Operational State</td><td>DAP / MongoDB</td><td>Real-time current-state events, guest entity management</td></tr>
+          <tr><td>Historical Depth</td><td>Databricks (medallion)</td><td>All historical transactions, flight history, behavioral patterns</td></tr>
+          <tr><td>Pipeline</td><td>Informatica IDMC</td><td>Moving and transforming data; bronze → silver → gold; MDM survivorship at silver layer</td></tr>
+          <tr class="highlight-row"><td>Harmonization ★</td><td>Data Cloud 360</td><td>Identity resolution, unified traveler profile, zero-copy federation</td></tr>
+          <tr><td>Integration</td><td>MuleSoft</td><td>Primary consumer of the unified profile; distributes to all downstream systems</td></tr>
+          <tr><td>Analytics</td><td>Tableau</td><td>Business-ready reporting and dashboards on the harmonized gold layer</td></tr>
+          <tr><td>CRM</td><td>Salesforce</td><td>Contact center, marketing, cargo, corporate sales — already active</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The key architectural principle: once the unified traveler profile exists in D360, MuleSoft becomes the distribution engine. Every system that needs to know who a guest is gets it from one source of truth.</p>
+  </div>
+
+  <div class="card">
+    <h4>What This Unlocks</h4>
+    <ul>
+      <li><strong>Contact center:</strong> Agents get a guest's full travel context — loyalty tier, recent bookings, PNR, real-time IROPS — before the call even begins. Agentic AI surfaces the right resolution before the agent has to ask.</li>
+      <li><strong>Marketing:</strong> B2C emails already flow through Salesforce. Personalization moves from loyalty-tier segments to true journey-based profiles — including full behavioral history across Alaska and Hawaiian.</li>
+      <li><strong>Dual-brand strategy:</strong> You don't need full systems consolidation before you can serve guests as if you have it. D360 resolves identity across brands today, enabling cross-sell and upsell at the individual guest level.</li>
+      <li><strong>AI strategy:</strong> The agentic AI capabilities your team is planning require unified data as their foundation. Fragmented data means fragmented agents. A single traveler profile is what makes end-to-end AI automation possible.</li>
+      <li><strong>Tableau investment:</strong> A harmonized gold layer means cross-functional reports, dual-brand analytics, and real-time + historical views — all from one semantic layer. Every dollar invested in Tableau scales with data unification.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h4>What We Want to Build Together</h4>
+    <p>We're not coming to this workshop to show you a pre-packaged solution. We're coming with a point of view — grounded in what you've shared about your current state — and we want to define the architecture together, with your domain experts in the room.</p>
+    <p>To do that well, it would help to have ahead of the session:</p>
+    <ul>
+      <li>Any current-state architecture diagrams (even domain-specific ones are useful)</li>
+      <li>Context on which Hawaiian systems remain unconsolidated</li>
+      <li>A shared understanding of where Informatica pipelines stand today relative to Oracle ODI</li>
+    </ul>
+    <p>The goal on the day is to leave with a specific, agreed-upon use case — most likely the unified guest traveler profile surfaced in the contact center — fully architected, with a clear view of what a proof of concept would look like.</p>
+  </div>
+
+  <p class="footer-note">Prepared for internal planning &nbsp;·&nbsp; June 2026</p>
+
+</div>
+</body>
+</html>
