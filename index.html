@@ -8,12 +8,99 @@
     :root { color-scheme: light; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html { scroll-behavior: smooth; }
+
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #f5f6f8;
       color: #1a1a2e;
       line-height: 1.7;
       padding: 40px 20px 80px;
+    }
+
+    /* ── Two-column layout ── */
+    .layout {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── Sticky sidebar TOC ── */
+    .sidebar {
+      position: sticky;
+      top: 28px;
+      max-height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+    .sidebar-toc {
+      background: #fff;
+      border: 1px solid #e0e5f0;
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 0.83rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    .sidebar-toc strong {
+      display: block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+    .sidebar-toc ol { list-style: none; padding: 0; margin: 0; }
+    .sidebar-toc li { margin-bottom: 2px; }
+    .sidebar-toc a {
+      display: block;
+      color: #6b7280;
+      text-decoration: none;
+      padding: 5px 8px;
+      border-radius: 6px;
+      line-height: 1.4;
+      transition: background 0.15s, color 0.15s;
+    }
+    .sidebar-toc a:hover { background: #f0f4fb; color: #0b3d91; }
+    .sidebar-toc a.active {
+      background: #e8eef9;
+      color: #0b3d91;
+      font-weight: 600;
+    }
+    .sidebar-toc .toc-num {
+      display: inline-block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #9ca3af;
+      margin-right: 5px;
+      width: 14px;
+    }
+    .sidebar-toc a.active .toc-num { color: #0b3d91; }
+
+    /* ── Main content column ── */
+    .main { min-width: 0; }
+
+    /* ── Inline TOC hidden on desktop ── */
+    .toc-inline { display: none; }
+
+    /* ── Mobile: collapse to single column ── */
+    @media (max-width: 780px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .toc-inline {
+        display: block;
+        background: #fff;
+        border: 1px solid #e0e5f0;
+        border-radius: 10px;
+        padding: 18px 24px;
+        margin-bottom: 24px;
+        font-size: 0.88rem;
+      }
+      .toc-inline strong { display: block; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 10px; }
+      .toc-inline ol { padding-left: 18px; }
+      .toc-inline li { margin-bottom: 4px; }
+      .toc-inline a { color: #0b3d91; text-decoration: none; }
     }
 
     .page { max-width: 880px; margin: 0 auto; }
@@ -103,20 +190,9 @@
     .card ul li::before { content: "→"; position: absolute; left: 0; color: #6b8ed6; font-size: 0.85rem; }
 
     /* ── Attendee two-col ── */
-    .attendees-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-top: 4px;
-    }
+    .attendees-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
     @media (max-width: 600px) { .attendees-grid { grid-template-columns: 1fr; } }
-    .att-group h4 {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #6b7280;
-      margin-bottom: 10px;
-    }
+    .att-group h4 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; margin-bottom: 10px; }
     .att-person { margin-bottom: 10px; }
     .att-person .name { font-size: 0.9rem; font-weight: 700; color: #1a1a2e; }
     .att-person .title { font-size: 0.83rem; color: #6b7280; }
@@ -171,6 +247,8 @@
     tbody td:first-child { font-weight: 600; color: #0b3d91; }
     tr.highlight-row td { background: #fef9e7 !important; font-weight: 600; }
     tr.highlight-row td:first-child { color: #b45309; }
+    tr.governance-row td { background: #f0fdf4 !important; }
+    tr.governance-row td:first-child { color: #166534; font-weight: 600; }
 
     /* ── Challenge badge ── */
     .challenge-num {
@@ -184,27 +262,155 @@
       margin-right: 6px;
     }
 
+    /* ── JetBlue proof point stats ── */
+    .jetblue-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    @media (max-width: 600px) { .jetblue-stats { grid-template-columns: repeat(2, 1fr); } }
+    .stat-box {
+      background: #f0f4fb;
+      border: 1px solid #dce3f0;
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+    }
+    .stat-box .stat-num { font-size: 1.4rem; font-weight: 800; color: #0b3d91; line-height: 1.2; }
+    .stat-box .stat-label { font-size: 0.75rem; color: #6b7280; margin-top: 4px; line-height: 1.3; }
+
+    /* ── Synergy three-col ── */
+    .synergy-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 16px 0;
+    }
+    @media (max-width: 640px) { .synergy-grid { grid-template-columns: 1fr; } }
+    .synergy-box {
+      background: #f8faff;
+      border: 1px solid #dce3f0;
+      border-radius: 8px;
+      padding: 16px 14px;
+    }
+    .synergy-box .synergy-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #0b3d91;
+      margin-bottom: 6px;
+    }
+    .synergy-box .synergy-headline {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #1a1a2e;
+      margin-bottom: 6px;
+    }
+    .synergy-box p { font-size: 0.85rem; color: #374151; margin: 0; }
+
     .footer-note { text-align: center; font-size: 0.8rem; color: #9ca3af; margin-top: 44px; font-style: italic; }
+
+    /* ── Inline visuals ── */
+    .visual-wrapper {
+      background: #f8faff;
+      border: 1px solid #dce3f0;
+      border-radius: 8px;
+      padding: 16px 18px 14px;
+      margin: 16px 0;
+    }
+    .visual-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    /* Survivorship table */
+    .surv-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+    .surv-table thead tr { background: #0b3d91; color: #fff; }
+    .surv-table thead th { padding: 7px 10px; text-align: left; font-weight: 600; line-height: 1.3; }
+    .surv-table thead th small { font-weight: 400; opacity: 0.75; display: block; font-size: 0.7rem; }
+    .surv-table tbody tr:nth-child(even) { background: #f0f4fb; }
+    .surv-table tbody tr:nth-child(odd)  { background: #fff; }
+    .surv-table tbody td { padding: 7px 10px; border-bottom: 1px solid #e5eaf4; color: #374151; vertical-align: middle; }
+    .surv-table tbody td:first-child { font-weight: 600; color: #374151; }
+    .surv-win { background: #dcfce7 !important; color: #166534; font-weight: 600; }
+    .surv-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 18px; height: 18px; border-radius: 50%;
+      font-size: 0.65rem; font-weight: 800; margin-right: 4px;
+      vertical-align: middle; flex-shrink: 0;
+    }
+    .badge-atmos  { background: #dbeafe; color: #1d4ed8; }
+    .badge-sabre  { background: #fef3c7; color: #92400e; }
+    .badge-dap    { background: #f3e8ff; color: #6b21a8; }
+    .badge-master { background: #0b3d91; color: #fff; }
+    .surv-legend {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-top: 10px; font-size: 0.75rem; color: #6b7280; align-items: center;
+    }
+    .surv-legend span { display: flex; align-items: center; gap: 4px; }
+    .surv-win-swatch {
+      display: inline-block; width: 12px; height: 12px;
+      background: #dcfce7; border: 1px solid #86efac; border-radius: 2px;
+    }
+
+    /* Hierarchy diagram */
+    .hier-wrap { overflow-x: auto; }
+    .hier-wrap svg { display: block; margin: 0 auto; }
+    .visual-caption {
+      font-size: 0.76rem; color: #9ca3af; text-align: center;
+      margin-top: 8px; font-style: italic; line-height: 1.4;
+    }
   </style>
 </head>
 <body>
-<div class="page">
 
-  <!-- Header -->
-  <div class="doc-header">
-    <h1>AAG Data Foundation Workshop — Internal Meeting Prep</h1>
-    <p class="meta">Based on pre-call with AAG Enterprise Architecture team &nbsp;·&nbsp; June 17, 2026</p>
+  <!-- Full-width header outside the grid -->
+  <div style="max-width:1140px; margin:0 auto 28px; padding:0 20px;">
+    <div class="doc-header">
+      <h1>AAG Data Foundation Workshop — Internal Meeting Prep</h1>
+      <p class="meta">Based on pre-call with AAG Enterprise Architecture team &nbsp;·&nbsp; June 17, 2026 &nbsp;·&nbsp; Updated with additional context June 23, 2026</p>
+    </div>
   </div>
 
-  <!-- TOC -->
-  <div class="toc">
+<div style="padding: 0 20px;">
+<div class="layout">
+
+  <!-- ── Sticky Sidebar ── -->
+  <aside class="sidebar">
+    <nav class="sidebar-toc">
+      <strong>Contents</strong>
+      <ol>
+        <li><a href="#s1" class="toc-link"><span class="toc-num">1</span>Call Summary</a></li>
+        <li><a href="#s2" class="toc-link"><span class="toc-num">2</span>Key Challenges</a></li>
+        <li><a href="#s3" class="toc-link"><span class="toc-num">3</span>Talking Points</a></li>
+        <li><a href="#s4" class="toc-link"><span class="toc-num">4</span>How Informatica Helps</a></li>
+        <li><a href="#s5" class="toc-link"><span class="toc-num">5</span>Informatica + Tableau</a></li>
+        <li><a href="#s6" class="toc-link"><span class="toc-num">6</span>JetBlue Proof Point</a></li>
+        <li><a href="#s7" class="toc-link"><span class="toc-num">7</span>Workshop POV Narrative</a></li>
+      </ol>
+    </nav>
+  </aside>
+
+  <!-- ── Main Content ── -->
+  <div class="main">
+
+  <!-- Mobile-only inline TOC -->
+  <div class="toc-inline">
     <strong>Contents</strong>
     <ol>
       <li><a href="#s1">Call Summary — Attendees</a></li>
       <li><a href="#s2">Key Challenges &amp; Aspirations</a></li>
       <li><a href="#s3">Internal Meeting Talking Points</a></li>
-      <li><a href="#s4">How Informatica Can Help (MDM &amp; Data Integration)</a></li>
-      <li><a href="#s5">Draft Workshop POV Narrative</a></li>
+      <li><a href="#s4">How Informatica Can Help (MDM, Data Integration &amp; CDAM)</a></li>
+      <li><a href="#s5">Informatica + Tableau: The Synergy Story</a></li>
+      <li><a href="#s6">Proof Point: JetBlue &amp; Informatica MDM</a></li>
+      <li><a href="#s7">Draft Workshop POV Narrative</a></li>
     </ol>
   </div>
 
@@ -278,6 +484,14 @@
     <blockquote>"A lot of your capabilities start to bleed into that space quite a bit." — Scott</blockquote>
   </div>
 
+  <div class="card">
+    <h3><span class="challenge-num">7</span> Tableau Adoption Blocked by Data Governance Overhead</h3>
+    <p>From the April 14 meeting with Sathya's team: stakeholder Oz explained that AAG has leaned away from published Tableau data sources due to the manual overhead of aligning Databricks access controls with Tableau. The burden fell on the data services team — and the result is that analysts build logic inside Databricks instead of using governed Tableau data sources.</p>
+    <blockquote>"We needed to do mapping of the data access model that we had onto Tableau, and then it became overhead for data services." — Oz (April 14 meeting)</blockquote>
+    <blockquote>"Business analyst, most of the time they develop the logic on the block because the data source is there." — Oz (April 14 meeting)</blockquote>
+    <p>This means Tableau's governance gap is actively driving analysts away from the tool — not just limiting it. This is a named, experienced pain point, not a hypothetical.</p>
+  </div>
+
   <!-- ═══ PART 3: TALKING POINTS ═══ -->
   <hr class="part-divider" />
   <div id="s3">
@@ -299,7 +513,7 @@
     </ul>
 
     <h4>The Architecture Story to Tell</h4>
-    <blockquote>DAP/MongoDB handles operational state → Informatica pipelines feed Databricks for history → D360 unifies identity across both layers → MuleSoft becomes the primary consumer of the unified profile, distributing it across systems → Tableau visualizes it for decision-makers.</blockquote>
+    <blockquote>DAP/MongoDB handles operational state → Informatica IDMC pipelines feed Databricks (with CDAM governing access at each layer) → D360 unifies identity across both layers → MuleSoft becomes the primary consumer of the unified profile, distributing it across systems → Tableau visualizes it for decision-makers with governance already enforced.</blockquote>
 
     <div class="callout">
       <strong>Key Talking Points</strong>
@@ -308,6 +522,7 @@
         <li>Zero-copy means we're not adding to their data duplication problem.</li>
         <li>The dual-brand requirement is a D360 strength: identity resolution across brands without full consolidation.</li>
         <li>The medallion architecture they're building in Databricks maps naturally to a D360 semantic layer.</li>
+        <li>CDAM sits across the entire stack — policies defined once, enforced everywhere including Tableau.</li>
       </ul>
     </div>
   </div>
@@ -347,21 +562,23 @@
   <div class="card">
     <h3><span class="tag">Agenda Item 3</span> What This Unlocks for Tableau</h3>
 
-    <h4>Current State Problem</h4>
-    <p>Analytics are fragmented by domain. Analysts navigate domain-specific sources rather than a unified layer — the same fragmentation that exists in their architecture diagrams.</p>
+    <h4>The Actual Problem — Name It Directly</h4>
+    <p>The Tableau barrier at AAG isn't just data fragmentation — it's that governance overhead actively drove teams away from Tableau. The manual process of mapping Databricks access controls onto Tableau was burdensome enough that data services stopped doing it. Analysts responded by keeping logic inside Databricks. This is a named, experienced pain point. Acknowledge it.</p>
+    <p>The fix isn't telling AAG to try Tableau again. The fix is removing the underlying cause: Informatica CDAM defines access policies once at the Databricks layer and pushes them down automatically to Tableau. No manual mapping. No overhead on data services. The barrier that drove analysts away disappears.</p>
 
-    <h4>What the Foundation Unlocks</h4>
+    <h4>What the Full Foundation Unlocks</h4>
     <ul>
-      <li><strong>Clean semantic layer:</strong> Tableau sits on top of the gold layer — pre-joined, business-ready data. No need to know where it lives.</li>
-      <li><strong>Cross-functional reporting:</strong> "Guest satisfaction with disruption handling" can pull loyalty (MIDAS), contact center (Salesforce), IROPS (DAP), and resolution (Sabre) from one place.</li>
-      <li><strong>Real-time + historical in one view:</strong> DAP handles operational state; Databricks handles history. D360 bridges them for simultaneous views in Tableau.</li>
-      <li><strong>Dual-brand executive analytics:</strong> How guests move between Alaska and Hawaiian — journey-level performance, not just separate brand P&Ls.</li>
+      <li><strong>Governance without overhead:</strong> CDAM policies propagate automatically from Databricks to Tableau. Data services gets time back; analysts can trust published data sources again.</li>
+      <li><strong>Clean semantic layer:</strong> Informatica IDMC delivers a harmonized gold layer — pre-joined, quality-checked, MDM-enriched. Tableau sits on top of it. Analysts stop asking "which number is right?"</li>
+      <li><strong>Cross-functional reporting:</strong> "Guest satisfaction with disruption handling" can pull loyalty (MIDAS), contact center (Salesforce), IROPS (DAP), and resolution (Sabre) from one place — for the first time.</li>
+      <li><strong>Real-time + historical in one view:</strong> D360 bridges DAP's operational state and Databricks' history. Tableau dashboards can show both simultaneously.</li>
+      <li><strong>Dual-brand executive analytics:</strong> Guest behavior across Alaska and Hawaiian — journey-level performance in one view — because MDM resolved identity across brands.</li>
     </ul>
 
     <div class="callout">
       <strong>Key Talking Point</strong>
       <ul>
-        <li>Every dollar invested in Tableau is currently limited by data fragmentation. The data foundation isn't a separate initiative — it's what makes Tableau's full promise redeemable.</li>
+        <li>Without Informatica, Tableau is limited by fragmentation, ungoverned access, and a missing unified entity model. Informatica removes all three constraints simultaneously. Every dollar AAG has invested in Tableau becomes more valuable — not with a new BI tool, but with the governed data foundation underneath it.</li>
       </ul>
     </div>
   </div>
@@ -385,8 +602,109 @@
     <h4>Survivorship &amp; Match/Merge → Dual-Brand Challenge</h4>
     <p>With dual-brand complexity (Alaska + Hawaiian guest histories), Informatica's survivorship rules determine which attributes to retain from each brand's systems as AAG migrates — without requiring full systems consolidation first. Robin's challenge of presenting a unified guest while running separate underlying systems is an MDM-native problem.</p>
 
+    <div class="visual-wrapper">
+      <div class="visual-title">Survivorship in Action — Building the AAG Guest Golden Record</div>
+      <div style="overflow-x:auto">
+        <table class="surv-table">
+          <thead>
+            <tr>
+              <th>Attribute</th>
+              <th><span class="surv-badge badge-master">★</span> Master Record<br><small>Golden Profile</small></th>
+              <th><span class="surv-badge badge-atmos">A</span> Atmos<br><small>Loyalty System</small></th>
+              <th><span class="surv-badge badge-sabre">S</span> Sabre<br><small>PSS / Booking</small></th>
+              <th><span class="surv-badge badge-dap">D</span> DAP<br><small>Contact Center</small></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Full Name</td>
+              <td><span class="surv-badge badge-atmos">A</span> Sarah Johnson</td>
+              <td class="surv-win">Sarah Johnson</td>
+              <td>S. Johnson</td>
+              <td>Sara J.</td>
+            </tr>
+            <tr>
+              <td>Loyalty Tier</td>
+              <td><span class="surv-badge badge-atmos">A</span> MVP Gold 75K</td>
+              <td class="surv-win">MVP Gold 75K</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Last Booking PNR</td>
+              <td><span class="surv-badge badge-sabre">S</span> XK7291</td>
+              <td>—</td>
+              <td class="surv-win">XK7291</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Preferred Contact</td>
+              <td><span class="surv-badge badge-dap">D</span> "Sarah J." · SMS</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="surv-win">"Sarah J." · SMS</td>
+            </tr>
+            <tr>
+              <td>Hawaiian Miles ID</td>
+              <td><span class="surv-badge badge-atmos">A</span> HM-482910</td>
+              <td class="surv-win">HM-482910</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="surv-legend">
+        <span><span class="surv-badge badge-atmos">A</span> Atmos / Loyalty</span>
+        <span><span class="surv-badge badge-sabre">S</span> Sabre / PSS</span>
+        <span><span class="surv-badge badge-dap">D</span> DAP / Contact Center</span>
+        <span><span class="surv-win-swatch"></span> Source that "won" for this attribute</span>
+      </div>
+    </div>
+
     <h4>Hierarchy Management → Corporate Sales Use Case</h4>
     <p>MDM can manage the relationship between individual travelers, corporate accounts, and loyalty tiers — giving the corporate sales team a true account hierarchy view directly within Salesforce CRM.</p>
+
+    <div class="visual-wrapper">
+      <div class="visual-title">Hierarchy View — Corporate Account with Traveler Members</div>
+      <div class="hier-wrap">
+        <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px">
+          <!-- Connector lines -->
+          <line x1="280" y1="62" x2="90"  y2="132" stroke="#c2d3f8" stroke-width="1.5"/>
+          <line x1="280" y1="62" x2="280" y2="132" stroke="#c2d3f8" stroke-width="1.5"/>
+          <line x1="280" y1="62" x2="470" y2="132" stroke="#c2d3f8" stroke-width="1.5"/>
+          <!-- Root node: Corporate Account -->
+          <rect x="160" y="8" width="240" height="54" rx="9" fill="#0b3d91"/>
+          <!-- Org icon -->
+          <circle cx="183" cy="27" r="5" fill="rgba(255,255,255,0.5)"/>
+          <rect x="176" y="33" width="14" height="8" rx="2" fill="rgba(255,255,255,0.5)"/>
+          <text x="280" y="29" text-anchor="middle" fill="#fff" font-size="11.5" font-weight="700" font-family="system-ui,sans-serif">Boeing Corporate Account</text>
+          <text x="280" y="48" text-anchor="middle" fill="rgba(255,255,255,0.65)" font-size="9.5" font-family="system-ui,sans-serif">Corporate Account · 47 active travelers</text>
+          <!-- Child 1: Alice -->
+          <rect x="18" y="132" width="144" height="58" rx="8" fill="#f4f7fd" stroke="#dce3f0" stroke-width="1.5"/>
+          <circle cx="44" cy="155" r="9" fill="#e8eef9"/>
+          <text x="44" y="159" text-anchor="middle" fill="#6b8ed6" font-size="9" font-weight="700" font-family="system-ui,sans-serif">AM</text>
+          <text x="100" y="152" text-anchor="middle" fill="#374151" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Alice Martinez</text>
+          <text x="100" y="166" text-anchor="middle" fill="#9ca3af" font-size="8.5" font-family="system-ui,sans-serif">Atmos Member</text>
+          <text x="100" y="179" text-anchor="middle" fill="#9ca3af" font-size="8.5" font-family="system-ui,sans-serif">12 flights / year</text>
+          <!-- Child 2: Bob (highlighted) -->
+          <rect x="208" y="132" width="144" height="58" rx="8" fill="#e8eef9" stroke="#0b3d91" stroke-width="2"/>
+          <circle cx="234" cy="155" r="9" fill="#0b3d91"/>
+          <text x="234" y="159" text-anchor="middle" fill="#fff" font-size="9" font-weight="700" font-family="system-ui,sans-serif">BT</text>
+          <text x="280" y="152" text-anchor="middle" fill="#0b3d91" font-size="10" font-weight="700" font-family="system-ui,sans-serif">Bob Thompson</text>
+          <text x="280" y="166" text-anchor="middle" fill="#6b8ed6" font-size="8.5" font-family="system-ui,sans-serif">MVP Gold 75K</text>
+          <text x="280" y="179" text-anchor="middle" fill="#6b8ed6" font-size="8.5" font-family="system-ui,sans-serif">38 flights / year</text>
+          <!-- Child 3: Carol -->
+          <rect x="398" y="132" width="144" height="58" rx="8" fill="#f4f7fd" stroke="#dce3f0" stroke-width="1.5"/>
+          <circle cx="424" cy="155" r="9" fill="#e8eef9"/>
+          <text x="424" y="159" text-anchor="middle" fill="#6b8ed6" font-size="9" font-weight="700" font-family="system-ui,sans-serif">CR</text>
+          <text x="470" y="152" text-anchor="middle" fill="#374151" font-size="10" font-weight="600" font-family="system-ui,sans-serif">Carol Roberts</text>
+          <text x="470" y="166" text-anchor="middle" fill="#9ca3af" font-size="8.5" font-family="system-ui,sans-serif">Atmos Member</text>
+          <text x="470" y="179" text-anchor="middle" fill="#9ca3af" font-size="8.5" font-family="system-ui,sans-serif">8 flights / year</text>
+        </svg>
+      </div>
+      <p class="visual-caption">MDM maintains account-to-traveler hierarchy relationships so corporate sales sees every traveler under an account — with loyalty tier, booking frequency, and travel history in one view inside Salesforce CRM.</p>
+    </div>
 
     <h4>Real-Time MDM Hub → MuleSoft Distribution Pattern</h4>
     <p>Feeding the golden record back to MuleSoft as the distribution engine (which Kiran identified as the primary consumer) is a proven MDM + MuleSoft integration pattern. MDM maintains the authoritative profile; MuleSoft distributes it in real time to the contact center, marketing, and AI agents.</p>
@@ -411,10 +729,128 @@
     <p>As Hawaiian systems are gradually deprecated, Informatica pipelines can manage the data migration and consolidation incrementally — reducing risk during a period when Robin noted the team is already capacity-constrained from the Hawaii acquisition.</p>
   </div>
 
-  <!-- ═══ PART 5: POV NARRATIVE ═══ -->
+  <div class="card">
+    <h3>Cloud Data Access Management (CDAM)</h3>
+    <span class="info-pill">Data Governance</span>
+    <span class="info-pill">CDAM</span>
+    <span class="info-pill">Access Control</span>
+
+    <h4>The Direct Fix for AAG's Tableau Problem</h4>
+    <p>Oz identified the exact problem CDAM solves: the manual overhead of mapping Databricks access controls onto Tableau burdened data services and drove analysts away from published data sources. CDAM eliminates this with no-code policy authoring through Cloud Data Governance and Catalog (CDGC). Policies are defined once and pushed down automatically into Databricks and Tableau simultaneously — no re-engineering, no manual mapping, no overhead.</p>
+
+    <h4>Metadata-Driven, AI-Powered Enforcement via CLAIRE</h4>
+    <p>CDAM policies use CLAIRE AI to automatically discover, classify, and catalog data across AAG's hybrid estate — Databricks, MongoDB, Sabre, Informatica pipelines. Access controls become contextual and automatic: the right people see the right data based on metadata attributes, regardless of which tool they're using to access it.</p>
+
+    <h4>Push-Down Enforcement into Databricks &amp; Tableau</h4>
+    <p>Policies can be pushed directly into Databricks and enforced at the platform level, then propagated automatically to Tableau when data is queried. This is the precise mechanism that removes the overhead Oz described. It also supports AAG's PII obligations — CDAM's protection methods (tokenization, redaction, hashing) ensure sensitive guest data (passport numbers, PNR, loyalty profiles) is handled correctly at every layer.</p>
+
+    <h4>Self-Service Data Access → Frees the Data Services Team</h4>
+    <p>CDAM's integration with Cloud Data Marketplace enables business users in marketing, the contact center, and cargo to request and access governed data products without waiting for engineering. Data stewards and engineers are freed from time-intensive access provisioning to focus on higher-value work — directly addressing the "people are so busy" constraint Robin raised.</p>
+  </div>
+
+  <!-- ═══ PART 5: SYNERGIES ═══ -->
   <hr class="part-divider" />
   <div id="s5">
     <div class="part-label">Part 5</div>
+    <div class="part-title">Informatica + Tableau: The Synergy Story</div>
+  </div>
+
+  <div class="card">
+    <p>Without Informatica, Tableau at AAG is a powerful tool constrained by three problems. Informatica removes all three simultaneously.</p>
+
+    <div class="synergy-grid">
+      <div class="synergy-box">
+        <div class="synergy-label">Problem 1</div>
+        <div class="synergy-headline">Governance overhead blocks adoption</div>
+        <p>Manual Databricks→Tableau access mapping burdens data services. Analysts avoid published data sources and build logic in Databricks instead.</p>
+        <br/>
+        <div class="synergy-label" style="color:#166534;">CDAM fixes this</div>
+        <p>Policies defined once in CDGC, pushed down to Databricks and Tableau automatically. No manual mapping. No overhead.</p>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">Problem 2</div>
+        <div class="synergy-headline">No trusted, unified data layer</div>
+        <p>Tableau connects to domain-specific sources with inconsistent quality. Analysts don't know which number to trust. Cross-domain reports are impossible.</p>
+        <br/>
+        <div class="synergy-label" style="color:#166534;">Data Integration fixes this</div>
+        <p>Informatica IDMC delivers a harmonized gold layer — quality-checked at silver, MDM-enriched, business-ready. Tableau sits on top of one trusted source.</p>
+      </div>
+      <div class="synergy-box">
+        <div class="synergy-label">Problem 3</div>
+        <div class="synergy-headline">No unified entity to anchor analysis</div>
+        <p>Tableau can show loyalty data OR bookings OR contact interactions — but not a unified view of the guest across all of them.</p>
+        <br/>
+        <div class="synergy-label" style="color:#166534;">MDM fixes this</div>
+        <p>Informatica MDM creates the golden guest record that every Tableau report can anchor to. "Guest journey" becomes a real dimension — including across Alaska and Hawaiian.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>One-sentence version for the room</strong>
+      <ul>
+        <li>Without Informatica, Tableau is limited by fragmentation, ungoverned access, and a missing unified entity model. Informatica removes all three constraints — simultaneously.</li>
+      </ul>
+    </div>
+
+    <h4>How This Lands for Each Stakeholder</h4>
+    <ul>
+      <li><strong>Robin &amp; Scott (Enterprise Architecture):</strong> Informatica is the layer that makes their Databricks medallion investment produce value in Tableau — not a competing initiative, the prerequisite for one.</li>
+      <li><strong>Data Services team:</strong> CDAM automates what they were doing manually. They get time back.</li>
+      <li><strong>Business analysts:</strong> Published Tableau data sources become trusted and accessible. Logic migrates out of Databricks notebooks into governed, reusable data products.</li>
+      <li><strong>Scott's AI strategy:</strong> Governed, trusted data in Tableau means governed, trusted inputs for AI models. The same CDAM policies that protect Tableau protect AI workloads.</li>
+    </ul>
+  </div>
+
+  <!-- ═══ PART 6: JETBLUE ═══ -->
+  <hr class="part-divider" />
+  <div id="s6">
+    <div class="part-label">Part 6</div>
+    <div class="part-title">Proof Point: JetBlue &amp; Informatica MDM</div>
+  </div>
+
+  <div class="card">
+    <h3>"One profile, millions of touchpoints" — JetBlue's journey to trusted customer data</h3>
+
+    <p>As JetBlue expanded its digital operations, its legacy customer data system struggled to keep up — the same challenge AAG is navigating today. JetBlue modernized by implementing Informatica MDM on Microsoft Azure, achieving a seamless customer experience across all touchpoints at scale.</p>
+
+    <div class="jetblue-stats">
+      <div class="stat-box">
+        <div class="stat-num">100M</div>
+        <div class="stat-label">unified customer profiles</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">99%</div>
+        <div class="stat-label">of customer interactions tied to unified profiles</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">1M+</div>
+        <div class="stat-label">daily events processed</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">99%</div>
+        <div class="stat-label">system uptime achieved</div>
+      </div>
+    </div>
+
+    <h4>Why This Matters for the AAG Workshop</h4>
+    <ul>
+      <li><strong>Direct airline peer:</strong> JetBlue faced the same digital scale problem with fragmented customer data that AAG is navigating today — including high-volume daily events (AAG's DAP already processes comparable event volumes).</li>
+      <li><strong>The 99% interaction tie-rate is the contact center story:</strong> 99% of customer interactions tied to a unified profile means agents almost never handle a call without full context. That's the contact center outcome AAG is aiming for.</li>
+      <li><strong>Proven at airline scale:</strong> The unified traveler profile AAG is working toward isn't aspirational — a fellow carrier has already built it with Informatica MDM and proven it in production.</li>
+    </ul>
+
+    <div class="callout">
+      <strong>Workshop framing suggestion</strong>
+      <ul>
+        <li>Use JetBlue not as a vendor slide, but as a mirror: "Here's what your incomplete Customer Master looks like when it's complete — 100M unified profiles, 99% of every guest interaction tied to full context. A fellow airline built this. Here's how we'd build it together for AAG."</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ PART 7: POV NARRATIVE ═══ -->
+  <hr class="part-divider" />
+  <div id="s7">
+    <div class="part-label">Part 7</div>
     <div class="part-title">Draft Workshop POV Narrative &nbsp;<span style="font-size:0.85rem; font-weight:400; color:#6b7280;">For: AAG Data Foundation Workshop &nbsp;·&nbsp; Week of July 6, 2026</span></div>
   </div>
 
@@ -425,13 +861,13 @@
     <p>But there's a consistent tension that surfaces across every team using Salesforce today — in the contact center, in marketing, in cargo, in corporate sales. It sounds like this:</p>
     <blockquote>"We have the system. We just don't have enough of the data."</blockquote>
     <p>What your teams are describing is an identity problem. The Customer Master you've built inside DAP is a meaningful start — guest IDs correlated across loyalty, bookings, and contact history. But it's not complete. When a contact center agent answers a call, they can't see the guest's full journey in one place. When a marketing team launches a personalized campaign, they're working from a loyalty segment, not a true behavioral profile. When an AI agent is asked to handle a disruption, it can't act decisively because it can't see the whole picture.</p>
-    <p>The missing piece is a harmonization layer — something that resolves identity across DAP, Databricks, Sabre, and Atmos, and makes that unified profile available to every downstream system in real time.</p>
+    <p>There's a second tension your team has experienced directly: Tableau hasn't fully delivered on its promise. The reason isn't the tool — it's that manually mapping Databricks access controls onto Tableau created overhead that fell on data services. Analysts responded rationally: they kept their logic inside Databricks, where the data already was. The result is that institutional knowledge and analytical logic lives outside your governed analytics layer.</p>
+    <p>Both tensions point to the same underlying need: a data foundation that resolves identity, enforces governance automatically, and makes the right data available to every tool and team — without manual effort.</p>
   </div>
 
   <div class="card">
     <h4>What We're Proposing</h4>
-    <p>Data Cloud 360 is that layer. It's not a new database. It doesn't copy your data or ask you to move it. It references your existing systems — DAP's operational state, Databricks' historical depth, your Informatica pipelines — and resolves them into a single, continuously-updated traveler profile.</p>
-    <p>Here's how your stack comes together:</p>
+    <p>The complete Informatica + Salesforce stack addresses both problems together. Here's how your architecture comes together:</p>
     <div class="arch-table-wrap">
       <table>
         <thead>
@@ -440,15 +876,22 @@
         <tbody>
           <tr><td>Operational State</td><td>DAP / MongoDB</td><td>Real-time current-state events, guest entity management</td></tr>
           <tr><td>Historical Depth</td><td>Databricks (medallion)</td><td>All historical transactions, flight history, behavioral patterns</td></tr>
-          <tr><td>Pipeline</td><td>Informatica IDMC</td><td>Moving and transforming data; bronze → silver → gold; MDM survivorship at silver layer</td></tr>
-          <tr class="highlight-row"><td>Harmonization ★</td><td>Data Cloud 360</td><td>Identity resolution, unified traveler profile, zero-copy federation</td></tr>
+          <tr><td>Pipeline</td><td>Informatica IDMC</td><td>Bronze → silver → gold; data quality + MDM survivorship at silver layer</td></tr>
+          <tr class="governance-row"><td>Governance &amp; Access ★</td><td>Informatica CDAM</td><td>No-code policies pushed into Databricks &amp; Tableau; CLAIRE AI auto-classification; eliminates manual access mapping overhead</td></tr>
+          <tr class="highlight-row"><td>Harmonization ★</td><td>Data Cloud 360</td><td>Identity resolution, unified traveler profile, zero-copy federation across all layers</td></tr>
           <tr><td>Integration</td><td>MuleSoft</td><td>Primary consumer of the unified profile; distributes to all downstream systems</td></tr>
-          <tr><td>Analytics</td><td>Tableau</td><td>Business-ready reporting and dashboards on the harmonized gold layer</td></tr>
+          <tr><td>Analytics</td><td>Tableau</td><td>Governed, business-ready reporting on the harmonized gold layer — without manual access overhead</td></tr>
           <tr><td>CRM</td><td>Salesforce</td><td>Contact center, marketing, cargo, corporate sales — already active</td></tr>
         </tbody>
       </table>
     </div>
-    <p>The key architectural principle: once the unified traveler profile exists in D360, MuleSoft becomes the distribution engine. Every system that needs to know who a guest is gets it from one source of truth.</p>
+    <p>The key architectural principle: CDAM governs access once, everywhere. D360 resolves identity once, for every system. MuleSoft distributes the unified profile in real time. Every team — contact center, marketing, AI agents, Tableau analysts — works from the same trusted, governed picture of the guest.</p>
+  </div>
+
+  <div class="card">
+    <h4>A Fellow Airline Has Already Built This</h4>
+    <p>JetBlue faced the same challenge: a legacy customer data system struggling to scale with digital operations. By implementing Informatica MDM, they now maintain 100 million unified customer profiles, process over 1 million daily events, and tie 99% of all customer interactions to a unified profile — at 99% system uptime.</p>
+    <p>That 99% interaction tie-rate is the contact center outcome your team described: an agent who handles almost every call with full guest context already in front of them. It's not aspirational. A fellow carrier built it. Here's how we build it for Alaska Airlines Group.</p>
   </div>
 
   <div class="card">
@@ -456,9 +899,9 @@
     <ul>
       <li><strong>Contact center:</strong> Agents get a guest's full travel context — loyalty tier, recent bookings, PNR, real-time IROPS — before the call even begins. Agentic AI surfaces the right resolution before the agent has to ask.</li>
       <li><strong>Marketing:</strong> B2C emails already flow through Salesforce. Personalization moves from loyalty-tier segments to true journey-based profiles — including full behavioral history across Alaska and Hawaiian.</li>
-      <li><strong>Dual-brand strategy:</strong> You don't need full systems consolidation before you can serve guests as if you have it. D360 resolves identity across brands today, enabling cross-sell and upsell at the individual guest level.</li>
-      <li><strong>AI strategy:</strong> The agentic AI capabilities your team is planning require unified data as their foundation. Fragmented data means fragmented agents. A single traveler profile is what makes end-to-end AI automation possible.</li>
-      <li><strong>Tableau investment:</strong> A harmonized gold layer means cross-functional reports, dual-brand analytics, and real-time + historical views — all from one semantic layer. Every dollar invested in Tableau scales with data unification.</li>
+      <li><strong>Dual-brand strategy:</strong> D360 resolves identity across brands today, enabling cross-sell and upsell at the individual guest level without full systems consolidation.</li>
+      <li><strong>AI strategy:</strong> The agentic AI your team is planning requires unified, governed data as its foundation. Fragmented data means fragmented agents. A single trusted traveler profile makes end-to-end automation possible.</li>
+      <li><strong>Tableau:</strong> CDAM removes the governance overhead that drove analysts away. A harmonized gold layer gives Tableau one trusted source. MDM gives it a unified guest to anchor every analysis. The Tableau investment becomes fully redeemable.</li>
     </ul>
   </div>
 
@@ -471,11 +914,38 @@
       <li>Context on which Hawaiian systems remain unconsolidated</li>
       <li>A shared understanding of where Informatica pipelines stand today relative to Oracle ODI</li>
     </ul>
-    <p>The goal on the day is to leave with a specific, agreed-upon use case — most likely the unified guest traveler profile surfaced in the contact center — fully architected, with a clear view of what a proof of concept would look like.</p>
+    <p>The goal on the day is to leave with a specific, agreed-upon use case — most likely the unified guest traveler profile surfaced in the contact center — fully architected, and a clear view of what a proof of concept would look like.</p>
   </div>
 
-  <p class="footer-note">Prepared for internal planning &nbsp;·&nbsp; June 2026</p>
+  <p class="footer-note">Prepared for internal planning &nbsp;·&nbsp; June 2026 &nbsp;·&nbsp; v3</p>
 
-</div>
+  </div><!-- end .main -->
+</div><!-- end .layout -->
+</div><!-- end padding wrapper -->
+
+<script>
+  // Highlight the active TOC link based on which section is in view
+  const sections = document.querySelectorAll('[id^="s"]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    },
+    {
+      rootMargin: '-10% 0px -80% 0px',
+      threshold: 0
+    }
+  );
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
 </body>
 </html>
