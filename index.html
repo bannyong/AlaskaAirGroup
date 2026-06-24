@@ -249,6 +249,8 @@
     tr.highlight-row td:first-child { color: #b45309; }
     tr.governance-row td { background: #f0fdf4 !important; }
     tr.governance-row td:first-child { color: #166534; font-weight: 600; }
+    tr.mdm-row td { background: #eef2ff !important; }
+    tr.mdm-row td:first-child { color: #3730a3; font-weight: 600; }
 
     /* ── Challenge badge ── */
     .challenge-num {
@@ -503,26 +505,32 @@
     <h3><span class="tag">Agenda Item 1</span> How MuleSoft + Tableau + Informatica + Data Cloud 360 Work Together</h3>
 
     <h4>The Setup</h4>
-    <p>AAG owns three of four components: MuleSoft (replacing TIBCO), Informatica (replacing Oracle ODI), and Tableau. The missing piece is Data Cloud 360 — the connective tissue that makes the rest of the investment work together.</p>
+    <p>AAG owns three of four components: MuleSoft (replacing TIBCO), Informatica (replacing Oracle ODI), and Tableau. The two missing pieces work together: <strong>Informatica MDM</strong> fills the identity resolution gap — creating the trusted Golden Guest Record — and <strong>Data Cloud 360</strong> activates it in real time across Salesforce's engagement tools.</p>
 
-    <h4>The Gap: Where D360 Fits</h4>
+    <h4>What MDM Adds: Enterprise Identity Resolution</h4>
     <ul>
-      <li><strong>Identity resolution at scale</strong> — connecting Atmos loyalty IDs, PNR/booking history, contact center interactions, real-time IROPS data, and the DAP's Customer Master into one unified traveler profile.</li>
-      <li><strong>Zero-copy harmonization</strong> — references data where it lives rather than duplicating it. Critical for AAG's multi-system estate.</li>
-      <li><strong>Real-time + historical bridge</strong> — DAP/MongoDB "hot data" and Databricks "warm data" coexist and are both accessible to downstream consumers simultaneously.</li>
+      <li><strong>True Golden Record with writeback</strong> — MDM resolves guest identity across MIDAS/Atmos, Sabre, DAP, and contact center using deep deterministic, probabilistic, and fuzzy matching — then writes the golden record back to source systems so MuleSoft, the contact center, and AI agents all consume one authoritative version.</li>
+      <li><strong>Multi-domain mastering</strong> — AAG has more than customer data. MDM also masters corporate accounts, flight ops entities, and cargo data — none of which D360 handles.</li>
+      <li><strong>Cross-ecosystem</strong> — Databricks, MongoDB, Sabre, and MIDAS are not Salesforce-native. MDM works across the full multi-cloud and on-prem estate.</li>
+    </ul>
+
+    <h4>What D360 Adds: Real-Time Activation</h4>
+    <ul>
+      <li><strong>Zero-copy federation</strong> — D360 references the MDM Golden Record without duplicating it, federating it into real-time engagement profiles for marketing, service, and AI.</li>
+      <li><strong>Salesforce-native activation</strong> — Directly feeds Marketing Cloud, Service Cloud, Tableau, and Agentforce. Handles consent, privacy, and data usage policies within the Salesforce ecosystem.</li>
     </ul>
 
     <h4>The Architecture Story to Tell</h4>
-    <blockquote>DAP/MongoDB handles operational state → Informatica IDMC pipelines feed Databricks (with CDAM governing access at each layer) → D360 unifies identity across both layers → MuleSoft becomes the primary consumer of the unified profile, distributing it across systems → Tableau visualizes it for decision-makers with governance already enforced.</blockquote>
+    <blockquote>DAP/MongoDB handles operational state → Informatica IDMC pipelines feed Databricks (CDAM governs access at each layer) → <strong>Informatica MDM resolves identity and creates the Golden Guest Record, writing it back to source systems</strong> → D360 federates that golden record in real time for Salesforce-native activation → MuleSoft distributes it across all downstream systems → Tableau visualizes it with governance already enforced.</blockquote>
 
     <div class="callout">
       <strong>Key Talking Points</strong>
       <ul>
-        <li>D360 complements what they've built in DAP — not a rip-and-replace.</li>
-        <li>Zero-copy means we're not adding to their data duplication problem.</li>
-        <li>The dual-brand requirement is a D360 strength: identity resolution across brands without full consolidation.</li>
-        <li>The medallion architecture they're building in Databricks maps naturally to a D360 semantic layer.</li>
-        <li>CDAM sits across the entire stack — policies defined once, enforced everywhere including Tableau.</li>
+        <li><strong>MDM is the fuel; D360 is the engine.</strong> MDM creates the trusted Golden Guest Record. D360 makes it actionable in real time for contact center, marketing, and Agentforce.</li>
+        <li>Using only D360 means activating imperfect, unmastered data. Using only MDM means the clean data can't reach Salesforce's engagement tools. Both together is the complete answer.</li>
+        <li>MDM's writeback to MuleSoft is critical — Kiran identified MuleSoft as the primary consumer. The golden record needs to propagate back, not just federate.</li>
+        <li>The dual-brand requirement is an MDM strength: match/merge/survivorship across Alaska and Hawaiian guest records without full systems consolidation.</li>
+        <li>CDAM governs access across the entire stack — policies defined once, enforced in Databricks and Tableau automatically.</li>
       </ul>
     </div>
   </div>
@@ -571,8 +579,8 @@
       <li><strong>Governance without overhead:</strong> CDAM policies propagate automatically from Databricks to Tableau. Data services gets time back; analysts can trust published data sources again.</li>
       <li><strong>Clean semantic layer:</strong> Informatica IDMC delivers a harmonized gold layer — pre-joined, quality-checked, MDM-enriched. Tableau sits on top of it. Analysts stop asking "which number is right?"</li>
       <li><strong>Cross-functional reporting:</strong> "Guest satisfaction with disruption handling" can pull loyalty (MIDAS), contact center (Salesforce), IROPS (DAP), and resolution (Sabre) from one place — for the first time.</li>
-      <li><strong>Real-time + historical in one view:</strong> D360 bridges DAP's operational state and Databricks' history. Tableau dashboards can show both simultaneously.</li>
-      <li><strong>Dual-brand executive analytics:</strong> Guest behavior across Alaska and Hawaiian — journey-level performance in one view — because MDM resolved identity across brands.</li>
+      <li><strong>Real-time + historical in one view:</strong> MDM's Golden Guest Record bridges DAP's operational state and Databricks' history into one trusted entity. D360 surfaces it in real time. Tableau dashboards can show both simultaneously.</li>
+      <li><strong>Dual-brand executive analytics:</strong> Guest behavior across Alaska and Hawaiian — journey-level performance in one view — because MDM resolved identity across both brands and D360 activated it for reporting.</li>
     </ul>
 
     <div class="callout">
@@ -596,8 +604,18 @@
     <span class="info-pill">Golden Record</span>
     <span class="info-pill">Identity Resolution</span>
 
+    <div class="callout">
+      <strong>Why MDM — not D360 — is the right identity resolution tool for AAG</strong>
+      <ul>
+        <li>D360 Identity Resolution builds real-time engagement profiles for Salesforce-native activation. It does <em>not</em> write back to source systems.</li>
+        <li>AAG's problem is enterprise-wide: fragmented identity across Sabre, MIDAS, DAP, and contact center — systems that are not Salesforce-native. MDM resolves this with deep deterministic + probabilistic + fuzzy matching and writes the Golden Guest Record back to every source system.</li>
+        <li>AAG also has multi-domain data needs (corporate accounts, flight ops, cargo) that D360 doesn't address. MDM handles all of them on one platform.</li>
+        <li><strong>The "both together" story:</strong> Informatica MDM masters the data → D360 activates it. MDM is the fuel; D360 is the engine that gets it into Salesforce's engagement tools.</li>
+      </ul>
+    </div>
+
     <h4>Golden Record Creation → The Unified Traveler Profile Gap</h4>
-    <p>AAG's incomplete Customer Master is precisely the MDM use case. Informatica MDM can consolidate guest identity across MIDAS/Atmos, Sabre PNR, DAP's MongoDB, contact center records, and Google Analytics into a single authoritative golden record.</p>
+    <p>AAG's incomplete Customer Master is precisely the MDM use case. Informatica MDM consolidates guest identity across MIDAS/Atmos, Sabre PNR, DAP's MongoDB, and contact center records using deep deterministic, probabilistic, and fuzzy matching — then writes the authoritative Golden Guest Record back to source systems. MuleSoft, the contact center, and AI agents all consume one trusted version of the guest.</p>
 
     <h4>Survivorship &amp; Match/Merge → Dual-Brand Challenge</h4>
     <p>With dual-brand complexity (Alaska + Hawaiian guest histories), Informatica's survivorship rules determine which attributes to retain from each brand's systems as AAG migrates — without requiring full systems consolidation first. Robin's challenge of presenting a unified guest while running separate underlying systems is an MDM-native problem.</p>
@@ -878,14 +896,15 @@
           <tr><td>Historical Depth</td><td>Databricks (medallion)</td><td>All historical transactions, flight history, behavioral patterns</td></tr>
           <tr><td>Pipeline</td><td>Informatica IDMC</td><td>Bronze → silver → gold; data quality + MDM survivorship at silver layer</td></tr>
           <tr class="governance-row"><td>Governance &amp; Access ★</td><td>Informatica CDAM</td><td>No-code policies pushed into Databricks &amp; Tableau; CLAIRE AI auto-classification; eliminates manual access mapping overhead</td></tr>
-          <tr class="highlight-row"><td>Harmonization ★</td><td>Data Cloud 360</td><td>Identity resolution, unified traveler profile, zero-copy federation across all layers</td></tr>
-          <tr><td>Integration</td><td>MuleSoft</td><td>Primary consumer of the unified profile; distributes to all downstream systems</td></tr>
+          <tr class="mdm-row"><td>Identity Resolution ★</td><td>Informatica MDM</td><td>Deep match/merge/survivorship across Sabre, MIDAS, DAP &amp; contact center; Golden Guest Record written back to source systems &amp; MuleSoft</td></tr>
+          <tr class="highlight-row"><td>Activation &amp; Federation ★</td><td>Data Cloud 360</td><td>Zero-copy federation of the MDM golden record; real-time engagement profiles for Marketing Cloud, Service Cloud, Tableau &amp; Agentforce</td></tr>
+          <tr><td>Integration</td><td>MuleSoft</td><td>Primary consumer of the Golden Guest Record; distributes to all downstream systems in real time</td></tr>
           <tr><td>Analytics</td><td>Tableau</td><td>Governed, business-ready reporting on the harmonized gold layer — without manual access overhead</td></tr>
           <tr><td>CRM</td><td>Salesforce</td><td>Contact center, marketing, cargo, corporate sales — already active</td></tr>
         </tbody>
       </table>
     </div>
-    <p>The key architectural principle: CDAM governs access once, everywhere. D360 resolves identity once, for every system. MuleSoft distributes the unified profile in real time. Every team — contact center, marketing, AI agents, Tableau analysts — works from the same trusted, governed picture of the guest.</p>
+    <p>The key architectural principle: CDAM governs access once, everywhere. <strong>Informatica MDM resolves identity and creates the Golden Guest Record — writing it back to every source system.</strong> D360 federates that golden record in real time for Salesforce-native activation. MuleSoft distributes the unified profile downstream. Every team — contact center, marketing, AI agents, Tableau analysts — works from the same trusted, governed picture of the guest.</p>
   </div>
 
   <div class="card">
@@ -899,7 +918,7 @@
     <ul>
       <li><strong>Contact center:</strong> Agents get a guest's full travel context — loyalty tier, recent bookings, PNR, real-time IROPS — before the call even begins. Agentic AI surfaces the right resolution before the agent has to ask.</li>
       <li><strong>Marketing:</strong> B2C emails already flow through Salesforce. Personalization moves from loyalty-tier segments to true journey-based profiles — including full behavioral history across Alaska and Hawaiian.</li>
-      <li><strong>Dual-brand strategy:</strong> D360 resolves identity across brands today, enabling cross-sell and upsell at the individual guest level without full systems consolidation.</li>
+      <li><strong>Dual-brand strategy:</strong> Informatica MDM resolves identity across Alaska and Hawaiian guest records through match/merge and survivorship — without requiring full systems consolidation first. D360 then activates that unified view in real time for cross-sell, upsell, and personalization.</li>
       <li><strong>AI strategy:</strong> The agentic AI your team is planning requires unified, governed data as its foundation. Fragmented data means fragmented agents. A single trusted traveler profile makes end-to-end automation possible.</li>
       <li><strong>Tableau:</strong> CDAM removes the governance overhead that drove analysts away. A harmonized gold layer gives Tableau one trusted source. MDM gives it a unified guest to anchor every analysis. The Tableau investment becomes fully redeemable.</li>
     </ul>
